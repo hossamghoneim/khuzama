@@ -90,6 +90,19 @@
 
                                         </div>
                                         <hr>
+
+                                        <div class="row">
+                                            <div class="form-group col-md-12">
+                                                <label for="print_notes">Print Notes</label>
+                                                {{ Form::textarea('print_notes',null,['class'=>'form-control','id'=>'print_notes','rows'=>0,'cols'=>0, 'style'=>"min-height:5px;"]) }}
+
+                                            </div>
+                                            @if($errors->has('print_notes'))
+                                                <span class="text-danger">{{ $errors->first('print_notes') }}</span>
+                                            @endif
+
+                                        </div>
+
                                         <div class="row">
                                             <div class="form-group col-md-12">
                                                 <label for="attachments" class="control-label {{ $errors->has('attachments') ? 'has-error' :'' }}">Item Attachments</label>

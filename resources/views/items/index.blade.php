@@ -47,8 +47,9 @@
 
                                 <th>Item Name</th>
                                 <th>Item Code</th>
-                                <th>Item Print_Code</th>
+                                <th>Item Print Code</th>
                                 <th>Notes</th>
+                                <th>Print Notes</th>
                                 <th>concentration_sum</th>
                                 <th>Attachments</th>
                                 <th>Created at</th>
@@ -112,6 +113,7 @@
                         {data: 'code', name: 'code',orderable: true, searchable: true},
                         {data: 'print_code', name: 'print_code',orderable: true, searchable: true},
                         {data: 'notes', name: 'notes',orderable: false, searchable: true},
+                        {data: 'print_notes', name: 'print_notes',orderable: false, searchable: true},
                         {data: 'concentration_sum', concentration_sum: 'notes',orderable: true, searchable: true},
                         {data: 'attachments', name: 'attachments',orderable: false, searchable: false},
 
