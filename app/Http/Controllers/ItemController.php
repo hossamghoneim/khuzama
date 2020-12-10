@@ -10,12 +10,7 @@ use Yajra\DataTables\Facades\DataTables;
 
 class ItemController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @throws
-     * @return object
-     */
+
     public function index()
     {
         //
@@ -61,39 +56,24 @@ class ItemController extends Controller
         return view('items.index');
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+
     public function create()
     {
-        //
-
         //$collection = (new FastExcel)->import(storage_path('app/26.xlsx'));
-
         //$collection = $collection->toArray();
-
         $components = Component::query()->get();
-
         return view('items.create', compact('components'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
+
     public function store(Request $request)
     {
-
+        // filter request to get components
         $components = $request->except(['name','code','print_code','notes','attachments','_token','_method']);
-
+        // start preprocessing
         $components = collect($components)->map(function ($e){
             return (double) $e;
         });
-
 
         $values = [];
 
@@ -106,24 +86,24 @@ class ItemController extends Controller
 
         for ($i=1;$i<=26;$i++){
 
-            $inputs[$i] = "numeric|between:0.00010,99999";
+            $inputs[$i] = "numeric|between:0,99999";
         }
 
 
         $validate = [
             'name' => 'required|min:3|max:255',
             'code' => 'required|min:3|max:255|unique:items,code',
-            'print_code' => 'required|min:3|max:255|unique:items,print_code',
+            'print_code' => 'required|min:3|max:255',
             'attachments' => 'file|mimes:pdf,docx,rtf,excel|max:10000',
         ];
 
         $validate = $validate + $inputs;
 
+// end preprocessing
 
         $this->validate($request,$validate);
 
         $components = $request->except(['name','code','print_code','notes','attachments','_token']);
-
 
 
         $item = Item::query()->create($request->all(['name','code','print_code','notes']));
@@ -152,12 +132,6 @@ class ItemController extends Controller
     }
 
 
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function import()
     {
         //
@@ -170,12 +144,7 @@ class ItemController extends Controller
         return view('items.import');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
+
     public function importStore(Request $request)
     {
         $this->validate($request,[
@@ -225,12 +194,7 @@ class ItemController extends Controller
 
 
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Item  $item
-     * @return \Illuminate\Http\Response
-     */
+
     public function show(Item $item)
     {
         //
@@ -245,12 +209,7 @@ class ItemController extends Controller
         }]);*/
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Item  $item
-     * @return \Illuminate\Http\Response
-     */
+    
     public function edit(Item $item)
     {
         //
@@ -260,13 +219,7 @@ class ItemController extends Controller
         return view('items.edit', compact('item'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Item  $item
-     * @return \Illuminate\Http\Response
-     */
+    
     public function update(Request $request, Item $item)
     {
         //
@@ -338,17 +291,28 @@ class ItemController extends Controller
 
         return back();
     }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Item  $item
-     * @return \Illuminate\Http\Response
-     */
+    
     public function destroy(Item $item)
     {
         //
         return response()->json($item->delete(),200);
 
+    }
+
+    public function makeItemCopy(Item $item)
+    {
+
+        $duplicatedItem = Item::create([
+            'name' => $item->name,
+            'code'=> explode('-v',$item->code)[0] . $item->version(),
+            'print_code'=> $item->print_code,
+            'notes'=> $item->notes
+        ]);
+        $duplicatedItem->components()->sync($item->components()->get()->map(function ($component){
+            return $component->pivot;
+        })->pluck('concentration', 'component_id'));
+
+        $item->update(['concentration_sum'=> $item->componentsSum()]);
+        return redirect(route('items.index'));
     }
 }

@@ -96,6 +96,8 @@ Route::group(['middleware' => ['auth'] ], function (){
         // delete Item
         Route::delete('/{item}/delete', 'ItemController@destroy')->name('items.delete')
             ->middleware('can:items_delete');
+        Route::get('/{item}/make_copy', 'ItemController@makeItemCopy')->name('items.make_copy');
+//            ->middleware('can:items_delete');
 
     });
 

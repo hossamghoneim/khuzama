@@ -48,4 +48,13 @@ class Item extends Model
         return $this->belongsToMany(Component::class,'items_components','item_id','component_id')->sum('concentration');
     }
 
+    public function version()
+    {
+        $version = Item::where([
+                ['name' ,'=', $this->name ],
+                ['print_code' ,'=', $this->print_code ],
+            ])->get()->count() + 1;
+        return "-v$version";
+    }
+
 }

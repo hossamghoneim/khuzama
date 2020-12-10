@@ -26,7 +26,11 @@
                             <button id="print" class="btn btn-primary btn-lg" style="margin-left: 100px;">
                                     <i class="fa fa-print"></i>
                                     Print Item
-                                </button>
+                            </button>
+                            <a id="duplicate" href="{{route('items.make_copy', $item->id)}}" class="btn btn-danger btn-lg" style="margin-left: 30px;">
+                                    <i class="fa fa-copy"></i>
+                                    Create Copy
+                            </a>
                             </span>
                         </h4>
                     </div>
