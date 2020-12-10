@@ -68,9 +68,12 @@ class ItemController extends Controller
 
     public function store(Request $request)
     {
-        // filter request to get components
+
         $components = $request->except(['name','code','print_code','notes','attachments','_token','_method']);
-        // start preprocessing
+
+
+        $components = $request->except(['name','code','print_code','notes','print_notes','attachments','_token','_method']);
+
         $components = collect($components)->map(function ($e){
             return (double) $e;
         });
@@ -103,10 +106,11 @@ class ItemController extends Controller
 
         $this->validate($request,$validate);
 
-        $components = $request->except(['name','code','print_code','notes','attachments','_token']);
+        $components = $request->except(['name','code','print_code','notes','print_notes','attachments','_token']);
 
 
-        $item = Item::query()->create($request->all(['name','code','print_code','notes']));
+
+        $item = Item::query()->create($request->all(['name','code','print_code','notes','print_notes']));
 
         $values = [];
 
@@ -223,7 +227,7 @@ class ItemController extends Controller
     public function update(Request $request, Item $item)
     {
         //
-        $components = $request->except(['name','code','print_code','notes','attachments','_token','_method']);
+        $components = $request->except(['name','code','print_code','notes','print_notes','attachments','_token','_method']);
 
         $components = collect($components)->map(function ($e){
             return (double) $e;
@@ -258,10 +262,10 @@ class ItemController extends Controller
         $this->validate($request,$validate);
 
 
-        $components = $request->except(['name','code','print_code','notes','attachments','_token','_method']);
+        $components = $request->except(['name','code','print_code','notes','print_notes','attachments','_token','_method']);
 
 
-        $item->update($request->all(['name','code','print_code','notes']));
+        $item->update($request->all(['name','code','print_code','notes', 'print_notes']));
 
         $values = [];
 

@@ -73,6 +73,12 @@
                                     {{ $item->notes ? $item->notes : 'no notes'  }}
                                     </div>
                                 </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                    <h5>Print Notes</h5>
+                                    {{ $item->print_notes ? $item->print_notes : 'no notes'  }}
+                                    </div>
+                                </div>
                                 <div class="row ">
                                     <h5><i class="fa fa-files-o"></i> Files:</h5>
                                 </div>
@@ -143,6 +149,9 @@
 
                             <th>كود الطباعة</th>
                             <td>{{ $item->print_code }}</td>
+
+                            <th>ملاحظات الطباعة</th>
+                            <td>{{ $item->print_notes }}</td>
 
                             <th>تاريح التسجيل الفعلي </th>
                             <td>{{ $item->created_at->format('Y-m-d') }}</td>
