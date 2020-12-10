@@ -46,12 +46,16 @@
                                             <li class="list-group-item">
                                                 <strong>Item Name: </strong>
                                                     {{ $item->name }}
-
                                             </li>
 
                                             <li class="list-group-item">
                                                 <strong>Item Code: </strong>
                                                     {{ $item->code }}
+                                            </li>
+
+                                            <li class="list-group-item">
+                                                <strong>Item Print_Code: </strong>
+                                                    {{ $item->print_code }}
                                             </li>
                                         </ul>
                                     </div>
@@ -132,6 +136,9 @@
                         <tr>
                             <th>كود الصنف</th>
                             <td>{{ $item->code }}</td>
+
+                            <th>كود الطباعة</th>
+                            <td>{{ $item->print_code }}</td>
 
                             <th>تاريح التسجيل الفعلي </th>
                             <td>{{ $item->created_at->format('Y-m-d') }}</td>

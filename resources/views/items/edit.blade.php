@@ -53,7 +53,7 @@
                                         {{ method_field('PATCH') }}
                                     <div class="row">
 
-                                        <div class="form-group col-md-6 {{ $errors->has('name') ? 'has-error' :'' }}">
+                                        <div class="form-group col-md-4 {{ $errors->has('name') ? 'has-error' :'' }}">
                                             {{ Form::label('name', 'Item Name') }}
                                             {{ Form::text('name',null,['class'=>'form-control','required']) }}
                                             @if($errors->has('name'))
@@ -61,11 +61,19 @@
                                             @endif
                                         </div>
 
-                                        <div class="form-group col-md-6 {{ $errors->has('code') ? 'has-error' :'' }}">
+                                        <div class="form-group col-md-4 {{ $errors->has('code') ? 'has-error' :'' }}">
                                             {{ Form::label('code', 'Item Code') }}
                                             {{ Form::text('code',null,['class'=>'form-control','required']) }}
                                             @if($errors->has('code'))
                                                 <span class="text-danger">{{ $errors->first('code') }}</span>
+                                            @endif
+                                        </div>
+
+                                        <div class="form-group col-md-4 {{ $errors->has('print_code') ? 'has-error' :'' }}">
+                                            {{ Form::label('print_code', 'Item Print_Code') }}
+                                            {{ Form::text('print_code',null,['class'=>'form-control','required']) }}
+                                            @if($errors->has('print_code'))
+                                                <span class="text-danger">{{ $errors->first('print_code') }}</span>
                                             @endif
                                         </div>
 

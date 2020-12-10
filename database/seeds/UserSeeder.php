@@ -19,7 +19,7 @@ class UserSeeder extends Seeder
             'username' => 1001,
             'email' => env('USER_EMAIL','admin@demo.com'),
             'mobile' => '999999999',
-            'password' => bcrypt(env('USER_PASSWORD','admin-demo')),
+                'password' => bcrypt(env('USER_PASSWORD','admin-demo')),
             'created_at' => \Carbon\Carbon::now(),
             'updated_at' => \Carbon\Carbon::now(),
 

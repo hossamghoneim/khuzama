@@ -88,7 +88,7 @@ class ItemController extends Controller
     public function store(Request $request)
     {
 
-        $components = $request->except(['name','code','notes','attachments','_token','_method']);
+        $components = $request->except(['name','code','print_code','notes','attachments','_token','_method']);
 
         $components = collect($components)->map(function ($e){
             return (double) $e;
@@ -113,6 +113,7 @@ class ItemController extends Controller
         $validate = [
             'name' => 'required|min:3|max:255',
             'code' => 'required|min:3|max:255|unique:items,code',
+            'print_code' => 'required|min:3|max:255|unique:items,print_code',
             'attachments' => 'file|mimes:pdf,docx,rtf,excel|max:10000',
         ];
 
@@ -121,11 +122,11 @@ class ItemController extends Controller
 
         $this->validate($request,$validate);
 
-        $components = $request->except(['name','code','notes','attachments','_token']);
+        $components = $request->except(['name','code','print_code','notes','attachments','_token']);
 
 
 
-        $item = Item::query()->create($request->all(['name','code','notes']));
+        $item = Item::query()->create($request->all(['name','code','print_code','notes']));
 
         $values = [];
 
@@ -269,7 +270,7 @@ class ItemController extends Controller
     public function update(Request $request, Item $item)
     {
         //
-        $components = $request->except(['name','code','notes','attachments','_token','_method']);
+        $components = $request->except(['name','code','print_code','notes','attachments','_token','_method']);
 
         $components = collect($components)->map(function ($e){
             return (double) $e;
@@ -294,6 +295,7 @@ class ItemController extends Controller
         $validate = [
             'name' => 'required|min:3|max:255',
             'code' => 'required|min:3|max:255|unique:items,code,'.$item->id,
+            'print_code' => 'required|min:3|max:255|unique:items,print_code,'.$item->id,
             'attachments' => 'file|mimes:pdf,docx,rtf,excel|max:10000',
         ];
 
@@ -303,10 +305,10 @@ class ItemController extends Controller
         $this->validate($request,$validate);
 
 
-        $components = $request->except(['name','code','notes','attachments','_token','_method']);
+        $components = $request->except(['name','code','print_code','notes','attachments','_token','_method']);
 
 
-        $item->update($request->all(['name','code','notes']));
+        $item->update($request->all(['name','code','print_code','notes']));
 
         $values = [];
 
