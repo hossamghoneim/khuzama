@@ -68,7 +68,7 @@
                                         </div>
 
                                         <div class="form-group col-md-3 {{ $errors->has('print_code') ? 'has-error' :'' }}">
-                                            {{ Form::label('print_code', 'Item Print_Code') }}
+                                            {{ Form::label('print_code', 'Item Print Code') }}
                                             {{ Form::text('print_code',null,['class'=>'form-control','required']) }}
                                             @if($errors->has('print_code'))
                                                 <span class="text-danger">{{ $errors->first('print_code') }}</span>

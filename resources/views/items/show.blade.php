@@ -61,6 +61,10 @@
                                                 <strong>Item Print Code: </strong>
                                                     {{ $item->print_code }}
                                             </li>
+                                            <li class="list-group-item">
+                                                <strong>Item Issue Date: </strong>
+                                                    {{ $item->issue_date }}
+                                            </li>
                                         </ul>
                                     </div>
 
