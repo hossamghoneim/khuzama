@@ -48,10 +48,11 @@
                                 <th>Item Name</th>
                                 <th>Item Code</th>
                                 <th>Item Print Code</th>
-                                <th>Notes</th>
-                                <th>Print Notes</th>
+{{--                                <th>Notes</th>--}}
+{{--                                <th>Print Notes</th>--}}
                                 <th>concentration_sum</th>
                                 <th>Attachments</th>
+                                <th>Issue Date</th>
                                 <th>Created at</th>
                                 <th>Options</th>
                             </tr>
@@ -108,15 +109,15 @@
 
                     columns: [
                         {data: 'id', name: 'id'},
-
                         {data: 'name', name: 'name',orderable: true, searchable: true},
                         {data: 'code', name: 'code',orderable: true, searchable: true},
                         {data: 'print_code', name: 'print_code',orderable: true, searchable: true},
-                        {data: 'notes', name: 'notes',orderable: false, searchable: true},
-                        {data: 'print_notes', name: 'print_notes',orderable: false, searchable: true},
+                        // {data: 'notes', name: 'notes',orderable: false, searchable: true},
+                        // {data: 'print_notes', name: 'print_notes',orderable: false, searchable: true},
                         {data: 'concentration_sum', concentration_sum: 'notes',orderable: true, searchable: true},
                         {data: 'attachments', name: 'attachments',orderable: false, searchable: false},
 
+                        {data: 'issue_date', name: 'issue_date',orderable: false, searchable: true},
                         {data: 'created_at', name: 'created_at',orderable: false, searchable: true},
                         {data: 'options', name: 'options', orderable: false, searchable: false}
 

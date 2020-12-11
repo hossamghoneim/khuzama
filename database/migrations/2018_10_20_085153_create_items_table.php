@@ -21,9 +21,8 @@ class CreateItemsTable extends Migration
             $table->string('print_code',255);
             $table->text('notes',255)->nullable();
             $table->text('print_notes',255)->nullable();
-
             $table->decimal('concentration_sum',10,5)->nullable();
-
+            $table->date('issue_date');
             $table->timestamps();
         });
     }

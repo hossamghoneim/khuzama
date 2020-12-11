@@ -68,52 +68,12 @@ class ItemController extends Controller
 
     public function store(Request $request)
     {
+        $this->validator($request);
 
-        $components = $request->except(['name','code','print_code','notes','attachments','_token','_method']);
-
-
-        $components = $request->except(['name','code','print_code','notes','print_notes','attachments','_token','_method']);
-
-        $components = collect($components)->map(function ($e){
-            return (double) $e;
-        });
+        $components = $request->except(['name','code','print_code','notes','print_notes', 'issue_date','attachments','_token']);
+        $item = Item::query()->create($request->all(['name','code','print_code','notes','print_notes', 'issue_date']));
 
         $values = [];
-
-        foreach($components as $key => $value)
-        {
-            $values[$key] = ['concentration' => $value];
-        }
-
-        //
-
-        for ($i=1;$i<=26;$i++){
-
-            $inputs[$i] = "numeric|between:0,99999";
-        }
-
-
-        $validate = [
-            'name' => 'required|min:3|max:255',
-            'code' => 'required|min:3|max:255|unique:items,code',
-            'print_code' => 'required|min:3|max:255',
-            'attachments' => 'file|mimes:pdf,docx,rtf,excel|max:10000',
-        ];
-
-        $validate = $validate + $inputs;
-
-// end preprocessing
-
-        $this->validate($request,$validate);
-
-        $components = $request->except(['name','code','print_code','notes','print_notes','attachments','_token']);
-
-
-
-        $item = Item::query()->create($request->all(['name','code','print_code','notes','print_notes']));
-
-        $values = [];
-
         foreach($components as $key => $value)
         {
             $values[$key] = ['concentration'=>$value];
@@ -226,46 +186,11 @@ class ItemController extends Controller
     
     public function update(Request $request, Item $item)
     {
-        //
-        $components = $request->except(['name','code','print_code','notes','print_notes','attachments','_token','_method']);
 
-        $components = collect($components)->map(function ($e){
-            return (double) $e;
-        });
+        $this->validator($request, $item->id);
+        $components = $request->except(['name','code','print_code','notes','print_notes','issue_date','attachments','_token','_method']);
 
-
-        $values = [];
-
-        foreach($components as $key => $value)
-        {
-            $values[$key] = ['concentration' => $value];
-        }
-
-        //
-
-        for ($i=1;$i<=26;$i++){
-
-            $inputs[$i] = "numeric|between:0.00010,99999";
-        }
-
-
-        $validate = [
-            'name' => 'required|min:3|max:255',
-            'code' => 'required|min:3|max:255|unique:items,code,'.$item->id,
-            'print_code' => 'required|min:3|max:255|unique:items,print_code,'.$item->id,
-            'attachments' => 'file|mimes:pdf,docx,rtf,excel|max:10000',
-        ];
-
-        $validate = $validate + $inputs;
-
-
-        $this->validate($request,$validate);
-
-
-        $components = $request->except(['name','code','print_code','notes','print_notes','attachments','_token','_method']);
-
-
-        $item->update($request->all(['name','code','print_code','notes', 'print_notes']));
+        $item->update($request->all(['name','code','print_code','notes','issue_date', 'print_notes']));
 
         $values = [];
 
@@ -303,6 +228,24 @@ class ItemController extends Controller
 
     }
 
+    public function validator(Request $request, $id = null)
+    {
+        $componentsRules =[];
+        for ($i=1;$i<=26;$i++){
+
+            $componentsRules[$i] = "numeric|between:0,99999";
+        }
+        $rules = [
+            'name' => 'required|min:3|max:255',
+            'code' => 'required|min:3|max:255|unique:items,code,' . $id,
+            'print_code' => 'required|min:3|max:255',
+            'issue_date' => 'required|date',
+            'attachments' => 'file|mimes:pdf,docx,rtf,excel|max:10000',
+        ];
+        $rules = $rules + $componentsRules;
+        return $this->validate($request,$rules);
+    }
+
     public function makeItemCopy(Item $item)
     {
 
@@ -310,13 +253,17 @@ class ItemController extends Controller
             'name' => $item->name,
             'code'=> explode('-v',$item->code)[0] . $item->version(),
             'print_code'=> $item->print_code,
-            'notes'=> $item->notes
+            'notes'=> $item->notes,
+            'issue_date'=> $item->issue_date,
+            'print_notes'=> $item->print_notes
         ]);
         $duplicatedItem->components()->sync($item->components()->get()->map(function ($component){
             return $component->pivot;
         })->pluck('concentration', 'component_id'));
 
-        $item->update(['concentration_sum'=> $item->componentsSum()]);
+        $duplicatedItem->update(['concentration_sum'=> $duplicatedItem->componentsSum()]);
         return redirect(route('items.index'));
     }
+
+
 }
