@@ -78,7 +78,11 @@ class ItemController extends Controller
         {
             $values[$key] = ['concentration'=>$value];
         }
-
+        /*
+         * [
+         *      1 => ['concentration' => $value]
+         * ]
+         * */
         $item->components()->sync($values);
 
         $item->update(['concentration_sum'=> $item->componentsSum()]);
@@ -257,11 +261,18 @@ class ItemController extends Controller
             'issue_date'=> $item->issue_date,
             'print_notes'=> $item->print_notes
         ]);
-        $duplicatedItem->components()->sync($item->components()->get()->map(function ($component){
-            return $component->pivot;
-        })->pluck('concentration', 'component_id'));
+
+        $components = $item->components()->get()->map(function ($component){
+            $concentrations[$component->id] = ['concentration' => $component->pivot->concentration];
+            return $concentrations;
+        })->toArray();
+
+        foreach ($components as $component) {
+            $duplicatedItem->components()->sync($component, false);
+        }
 
         $duplicatedItem->update(['concentration_sum'=> $duplicatedItem->componentsSum()]);
+
         return redirect(route('items.index'));
     }
 
