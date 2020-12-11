@@ -58,7 +58,7 @@
                                             </li>
 
                                             <li class="list-group-item">
-                                                <strong>Item Print_Code: </strong>
+                                                <strong>Item Print Code: </strong>
                                                     {{ $item->print_code }}
                                             </li>
                                         </ul>
@@ -150,9 +150,6 @@
                             <th>كود الطباعة</th>
                             <td>{{ $item->print_code }}</td>
 
-                            <th>ملاحظات الطباعة</th>
-                            <td>{{ $item->print_notes }}</td>
-
                             <th>تاريح التسجيل الفعلي </th>
                             <td>{{ $item->created_at->format('Y-m-d') }}</td>
 
@@ -187,6 +184,20 @@
 
                         </tbody>
                     </table>
+
+                    <table class="table table-bordered">
+
+                        <thead>
+                        <tr>
+
+                            <th>ملاحظات الطباعة</th>
+                            <td>{{ $item->print_notes }}</td>
+
+                        </tr>
+                        </thead>
+
+                    </table>
+
                 </div>
 
             </div>
