@@ -148,10 +148,7 @@
                     <table class="table table-bordered">
                         <thead>
                         <tr>
-                            <th>كود الصنف</th>
-                            <td>{{ $item->code }}</td>
-
-                            <th>كود الطباعة</th>
+                            <th> الكـــود </th>
                             <td>{{ $item->print_code }}</td>
 
                             <th>تاريح التسجيل الفعلي </th>
@@ -194,7 +191,6 @@
                         <thead>
                         <tr>
 
-                            <th>ملاحظات الطباعة</th>
                             <td>{{ $item->print_notes }}</td>
 
                         </tr>
