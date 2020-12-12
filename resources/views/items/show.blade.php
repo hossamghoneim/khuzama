@@ -152,7 +152,7 @@
                             <td>{{ $item->print_code }}</td>
 
                             <th>تاريح التسجيل الفعلي </th>
-                            <td>{{ $item->created_at->format('Y-m-d') }}</td>
+                            <td>{{ $item->issue_date }}</td>
 
                         </tr>
                         </thead>
