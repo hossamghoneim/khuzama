@@ -179,6 +179,9 @@
                 //dir: "rtl"
             });
 
+            let currentDate = new Date().toISOString().substr(0, 10);
+            $("input[name='issue_date']").val(currentDate);
+
         });
     </script>
 @endsection
